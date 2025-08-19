@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>Login</title>
+
+    <link rel="stylesheet" href="/css_bootstrap/bootstrap.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/buybike.css" />
+  </head>
+  <body class="login-page">
+    <div class="login">
+      <h1>Buy a bike</h1>
+      <form action="/info" method="post">
+        <label for="username">
+          <!-- font awesome icon -->
+          <i class="fas fa-user"></i>
+        </label>
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          id="username"
+          required
+        />
+        <label for="mobile">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input
+          type="text"
+          name="mobile"
+          placeholder="Mobile"
+          id="mobile"
+          required
+        />
+        <label for="address">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input
+          type="text"
+          name="address"
+          placeholder="address"
+          id="address"
+          required
+        />
+        <label for="license">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input
+          type="text"
+          name="license"
+          placeholder="license"
+          id="license"
+          required
+        />
+        <label for="model">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input
+          type="text"
+          name="model"
+          placeholder="model"
+          id="model"
+          required
+        />
+        <label for="area">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input type="text" name="area" placeholder="area" id="area" required />
+        <label for="email">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          id="email"
+          required
+        />
+        <input type="submit" value="Buy" />
+      </form>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="userlogin.js"></script> -->
+  </body>
+</html>

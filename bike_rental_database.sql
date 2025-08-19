@@ -1,76 +1,70 @@
--- CREATE DATABASE IF NOT EXISTS `nodelogin` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `nodelogin` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `nodelogin`;
 
--- CREATE TABLE IF NOT EXISTS `accounts` (
---   `id` int(11) NOT NULL AUTO_INCREMENT,
---   `username` varchar(50) NOT NULL,
---   `password` varchar(255) NOT NULL,
---   `email` varchar(100) NOT NULL,
---   PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- Users table
+CREATE TABLE IF NOT EXISTS `accounts` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_accounts_email` (`email`),
+  UNIQUE KEY `uniq_accounts_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
--- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'kirti123#';
--- CREATE TABLE IF NOT EXISTS `admin` (
---   `id` int(11) NOT NULL AUTO_INCREMENT,
---   `username` varchar(50) NOT NULL,
---   `password` varchar(255) NOT NULL,
---   `email` varchar(100) NOT NULL,
---   PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- Admin table
+CREATE TABLE IF NOT EXISTS `admin` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_admin_email` (`email`),
+  UNIQUE KEY `uniq_admin_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- INSERT INTO `admin` (`id`, `username`, `password`, `email`) VALUES (1, 'kirti', 'kirti', 'kirti@kirti.com');
+-- Bikes bookings table
+CREATE TABLE IF NOT EXISTS `bikes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `mobile` BIGINT NOT NULL,
+  `address` VARCHAR(100) NOT NULL,
+  `license` VARCHAR(100) NOT NULL,
+  `model` VARCHAR(100) NOT NULL,
+  `area` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- CREATE TABLE IF NOT EXISTS `bikes` (
---   `id` int(11) NOT NULL AUTO_INCREMENT,
---   `username` varchar(50) NOT NULL,
---   `password` varchar(255) NOT NULL,
---   `email` varchar(100) NOT NULL,
---   PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- Admin add bikes catalog
+CREATE TABLE IF NOT EXISTS `add_bikes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(50) NOT NULL,
+  `description` VARCHAR(200) NOT NULL,
+  `model` VARCHAR(100) NOT NULL,
+  `cost` INT NOT NULL,
+  `features` VARCHAR(200) NOT NULL,
+  `file_data` MEDIUMBLOB,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- INSERT INTO `admin` (`id`, `username`, `password`, `email`) VALUES (1, 'kirti', 'kirti', 'kirti@kirti.com');
+-- User profiles
+CREATE TABLE IF NOT EXISTS `user_profiles` (
+  `username` VARCHAR(50) NOT NULL,
+  `email` VARCHAR(200) NOT NULL,
+  `number` BIGINT NOT NULL,
+  `license` VARCHAR(100) NOT NULL,
+  `address` VARCHAR(200) NOT NULL,
+  `state` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- CREATE TABLE IF NOT EXISTS `bikes` (
---   `id` int(11) NOT NULL AUTO_INCREMENT,
---   `name` varchar(50) NOT NULL,
---   `mobile` int(20) NOT NULL,
---    `address` varchar(100) NOT NULL,
---    `license` varchar(100) NOT NULL,
---    `state` varchar(100) NOT NULL,
---    `area` varchar(100) NOT NULL,
---   `email` varchar(100) NOT NULL,
---   PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- Optional seed users
+INSERT INTO `accounts` (`username`, `password`, `email`) VALUES
+  ('test', 'test', 'test@test.com')
+ON DUPLICATE KEY UPDATE email=VALUES(email);
 
--- SELECT * FROM bikes where name="test";
-
--- CREATE TABLE IF NOT EXISTS `add_bikes` (
---   `id` int(11) NOT NULL AUTO_INCREMENT,
---   `name` varchar(50) NOT NULL,
---   
---    `description` varchar(200) NOT NULL,
---    `model` int(100) NOT NULL,
---    `cost` int(100) NOT NULL,
---    `features` varchar(200) NOT NULL,
---   `file_data` MEDIUMBLOB NOT NULL,
---   PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- CREATE TABLE IF NOT EXISTS `user_profiles` (
---   
---   `username` varchar(50) NOT NULL,
---    `email` varchar(200) NOT NULL,
---    `number` int(100) NOT NULL,
---    `license` int(100) NOT NULL,
---    `address` varchar(200) NOT NULL,
---    `state` varchar(200) NOT NULL,
---   
---   PRIMARY KEY (`username`)
--- ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
-
-
-ALTER TABLE bikes
-RENAME COLUMN state to model;
+INSERT INTO `admin` (`username`, `password`, `email`) VALUES
+  ('kirti', 'kirti', 'kirti@kirti.com')
+ON DUPLICATE KEY UPDATE email=VALUES(email);
 

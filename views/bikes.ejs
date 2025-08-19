@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>Choose Bike</title>
+
+    <link rel="stylesheet" href="/css_bootstrap/bootstrap.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/bikes.css" />
+  </head>
+  <body class="hoja">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#"
+          ><i style="padding: 10px" class="fas fa-biking fa-2x logo"></i
+          >BikeRental</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="/userdashboard"
+                >Book a bike</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/mybooking">My Bookings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/userprofile">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link btn btn-0" href="index.html">LogOut</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <h1 class="heading1">Choose a Bike</h1>
+      <% if(userData.length!=0){ var i=1; userData.forEach(function(data){ %>
+      <div
+        class="col-lg-4 d-flex justify-content-center align-items-center flex-column"
+        style="margin-top: 20px"
+      >
+        <div class="card" style="width: 25rem">
+          <div class="card-body">
+            <h5 class="card-title"><%=data.name %></h5>
+            <p class="card-text"><%=data.description %></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Model: <%=data.model %></li>
+            <li class="list-group-item">Cost: <%=data.cost %></li>
+            <li class="list-group-item">Features: <%=data.features %></li>
+          </ul>
+          <div class="card-body">
+            <a href="/buybike" class="btn btn-primary">Book Now</a>
+          </div>
+        </div>
+      </div>
+      <% i++; }) %> <% } else{ %>
+      <tr>
+        <td colspan="8">No bikes added</td>
+      </tr>
+      <% } %>
+    </div>
+    <div id="products-cards-container" class="row"></div>
+    <script src="/js_bootstrap/bootstrap.min.js"></script>
+    <!-- <script src="/js/bikes.js"></script> -->
+  </body>
+</html>

@@ -1,23 +1,25 @@
-const mysql = require("mysql");
+require("dotenv").config();
+const mysql = require("mysql2");
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
 const ejs = require("ejs");
 const niceinvoice = require("nice-invoice");
-const req = require("express/lib/request");
-const res = require("express/lib/response");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "kirti123#",
-  database: "nodelogin",
+const db = mysql.createPool({
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "nodelogin",
+  connectionLimit: 10,
+  multipleStatements: true,
 });
 const app = express();
 app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
 app.use(
   session({
-    secret: "secret",
+    secret: process.env.SESSION_SECRET || "secret",
     resave: true,
     saveUninitialized: true,
   })
@@ -40,7 +42,7 @@ app.post("/auth", function (request, response) {
   // Ensure the input fields exists and are not empty
   if (username && password) {
     // Execute SQL query that'll select the account from the database based on the specified username and password
-    connection.query(
+    db.query(
       "SELECT * FROM accounts WHERE username = ? AND password = ?",
       [username, password],
       function (error, results, fields) {
@@ -103,7 +105,7 @@ app.post("/auth1", function (request, response) {
   // Ensure the input fields exists and are not empty
   if (username && password) {
     // Execute SQL query that'll select the account from the database based on the specified username and password
-    connection.query(
+    db.query(
       "SELECT * FROM admin WHERE username = ? AND password = ?",
       [username, password],
       function (error, results, fields) {
@@ -173,12 +175,11 @@ app.post("/auth2", function (req, res, next) {
   };
   // check unique email address
   var sql = "SELECT * FROM accounts WHERE email =?";
-  connection.query(sql, [inputData.email], function (err, data, fields) {
-    console.log(msg);
+  db.query(sql, [inputData.email], function (err, data, fields) {
     if (err) throw err;
-    if (data.length > 1) {
-      var ans = inputData.email + "was already exist";
-      alert(ans);
+    if (data.length > 0) {
+      const ans = inputData.email + " was already exist";
+      return res.status(400).send(ans);
     }
     // else if (inputData.confirm_password != inputData.password) {
     //   var msg = "Password & Confirm Password is not Matched";
@@ -186,17 +187,16 @@ app.post("/auth2", function (req, res, next) {
     else {
       // save users data into database
       var sql = "INSERT INTO accounts SET ?";
-      connection.query(sql, inputData, function (err, data) {
+      db.query(sql, inputData, function (err, data) {
         if (err) throw err;
       });
       var sql1 = "INSERT INTO user_profiles SET ?";
-      connection.query(sql1, inputData2, function (err, data) {
+      db.query(sql1, inputData2, function (err, data) {
         if (err) throw err;
       });
 
-      var msg = "Your are successfully registered";
+      const msg = "You are successfully registered";
     }
-    console.log(msg);
     res.sendFile(path.join(__dirname + "/static/userdashboard.html"));
   });
 });
@@ -216,12 +216,11 @@ app.post("/admin", function (req, res, next) {
 
   // check unique email address
   var sql = "SELECT * FROM admin WHERE email =?";
-  connection.query(sql, [inputData.email], function (err, data, fields) {
-    console.log(msg);
+  db.query(sql, [inputData.email], function (err, data, fields) {
     if (err) throw err;
-    if (data.length > 1) {
-      var ans = inputData.email + "was already exist";
-      alert(ans);
+    if (data.length > 0) {
+      const ans = inputData.email + " was already exist";
+      return res.status(400).send(ans);
     }
     // else if (inputData.confirm_password != inputData.password) {
     //   var msg = "Password & Confirm Password is not Matched";
@@ -229,13 +228,12 @@ app.post("/admin", function (req, res, next) {
     else {
       // save users data into database
       var sql = "INSERT INTO admin SET ?";
-      connection.query(sql, inputData, function (err, data) {
+      db.query(sql, inputData, function (err, data) {
         if (err) throw err;
       });
 
-      var msg = "Successfully registered as admin";
+      const msg = "Successfully registered as admin";
     }
-    console.log(msg);
     res.sendFile(path.join(__dirname + "/static/admindashboard.html"));
   });
 });
@@ -261,12 +259,11 @@ app.post("/info", function (req, res, next) {
 
   // check unique email address
   var sql = "SELECT * FROM bikes WHERE email =?";
-  connection.query(sql, [inputData.email], function (err, data, fields) {
-    console.log(msg);
+  db.query(sql, [inputData.email], function (err, data, fields) {
     if (err) throw err;
-    if (data.length > 1) {
-      var ans = inputData.email + "was already exist";
-      alert(ans);
+    if (data.length > 0) {
+      const ans = inputData.email + " was already exist";
+      return res.status(400).send(ans);
     }
     // else if (inputData.confirm_password != inputData.password) {
     //   var msg = "Password & Confirm Password is not Matched";
@@ -274,13 +271,12 @@ app.post("/info", function (req, res, next) {
     else {
       // save users data into database
       var sql = "INSERT INTO bikes SET ?";
-      connection.query(sql, inputData, function (err, data) {
+      db.query(sql, inputData, function (err, data) {
         if (err) throw err;
       });
 
-      var msg = "Your are booked";
+      const msg = "You are booked";
     }
-    console.log(msg);
     res.redirect("/mybooking");
   });
 });
@@ -302,13 +298,12 @@ app.post("/info1", function (req, res, next) {
     // confirm_password: req.body.confirm_password,
   };
   // check unique email address
-  var sql = "SELECT * FROM new_bikes WHERE model =?";
-  connection.query(sql, [inputData.model], function (err, data, fields) {
-    console.log(msg);
+  var sql = "SELECT * FROM add_bikes WHERE model =?";
+  db.query(sql, [inputData.model], function (err, data, fields) {
     if (err) throw err;
-    if (data.length > 1) {
-      var ans = inputData.model + "was already exist";
-      alert(ans);
+    if (data.length > 0) {
+      const ans = inputData.model + " was already exist";
+      return res.status(400).send(ans);
     }
     // else if (inputData.confirm_password != inputData.password) {
     //   var msg = "Password & Confirm Password is not Matched";
@@ -316,13 +311,12 @@ app.post("/info1", function (req, res, next) {
     else {
       // save users data into database
       var sql = "INSERT INTO add_bikes SET ?";
-      connection.query(sql, inputData, function (err, data) {
+      db.query(sql, inputData, function (err, data) {
         if (err) throw err;
       });
 
-      var msg = "You added a bike";
+      const msg = "You added a bike";
     }
-    console.log(msg);
     res.redirect("/addbikes");
   });
 });
@@ -330,7 +324,7 @@ app.post("/info1", function (req, res, next) {
 app.get("/mybooking", function (req, res, next) {
   if (req.session.loggedin) {
     var sql = `SELECT * FROM bikes where name="${req.session.username}"`;
-    connection.query(sql, function (err, data, fields) {
+    db.query(sql, function (err, data, fields) {
       if (err) throw err;
       res.render("mybooking", { title: "User List", userData: data });
     });
@@ -343,7 +337,7 @@ app.get("/mybooking", function (req, res, next) {
 app.get("/reservation", function (req, res, next) {
   if (req.session.loggedin) {
     var sql = "SELECT * FROM bikes";
-    connection.query(sql, function (err, data, fields) {
+    db.query(sql, function (err, data, fields) {
       if (err) throw err;
       res.render("reservation", { title: "User List", userData: data });
     });
@@ -356,7 +350,7 @@ app.get("/reservation", function (req, res, next) {
 app.get("/addbikes", function (req, res, next) {
   if (req.session.loggedin) {
     var sql = "SELECT * FROM add_bikes";
-    connection.query(sql, function (err, data, fields) {
+    db.query(sql, function (err, data, fields) {
       if (err) throw err;
       res.render("addbikes", { title: "User List", userData: data });
     });
@@ -369,7 +363,7 @@ app.get("/addbikes", function (req, res, next) {
 app.get("/bikes", function (req, res, next) {
   if (req.session.loggedin) {
     var sql = "SELECT * FROM add_bikes";
-    connection.query(sql, function (err, data, fields) {
+    db.query(sql, function (err, data, fields) {
       if (err) throw err;
       res.render("bikes", { title: "User List", userData: data });
     });
@@ -427,7 +421,7 @@ app.post("/updation", function (request, response) {
   // Ensure the input fields exists and are not empty
 
   var sql = `UPDATE accounts SET password = "${newpass}"  WHERE password = "${oldpass}" AND username = "${request.session.username}"`;
-  connection.query(sql, function (err, result) {
+  db.query(sql, function (err, result) {
     if (err) throw err;
     console.log(result.affectedRows);
     if (result.affectedRows == 0) response.send("wrong old passowrd");
@@ -446,7 +440,7 @@ app.post("/updation1", function (request, response) {
   // Ensure the input fields exists and are not empty
 
   var sql = `UPDATE admin SET password = "${newpass}"  WHERE password = "${oldpass}" AND username = "${request.session.username}"`;
-  connection.query(sql, function (err, result) {
+  db.query(sql, function (err, result) {
     if (err) throw err;
     console.log(result.affectedRows);
     if (result.affectedRows == 0) response.send("wrong old passowrd");
@@ -553,43 +547,15 @@ app.get("/updatepass1", function (request, response) {
   }
 });
 
-app.get("/bikes", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("bikes");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
+// removed duplicate /bikes route (kept DB-backed version above)
 app.get("/userregister", function (request, response) {
   // Render login template
-  response.sendFile(path.join(__dirname + "/static/userregsiter.html"));
+  response.sendFile(path.join(__dirname + "/static/userregister.html"));
 });
-app.get("/userprofile", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("userprofile");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
+// removed duplicate /userprofile route (kept DB-backed version above)
 
-app.get("/mybooking", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("mybooking");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
-app.get("/invoice", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("invoice");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
+// removed duplicate /mybooking route (kept DB-backed version above)
+// removed duplicate /invoice route (kept DB-backed version above)
 
 app.get("/userinfo", function (request, response) {
   // Render login template
@@ -597,34 +563,13 @@ app.get("/userinfo", function (request, response) {
     username: request.session.username,
   });
 });
-app.get("/addbikes", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("addbikes");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
+// removed duplicate /addbikes route (kept DB-backed version above)
 app.get("/adminlogin", function (request, response) {
   // Render login template
   response.sendFile(path.join(__dirname + "/static/adminlogin.html"));
 });
-app.get("/adminprofile", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("adminprofile");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
-app.get("/reservation", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.render("reservation");
-  } else {
-    response.send("Please login to view this page!");
-  }
-});
+// removed duplicate /adminprofile route (kept DB-backed version above)
+// removed duplicate /reservation route (kept DB-backed version above)
 app.get("/buybike", function (request, response) {
   if (request.session.loggedin) {
     // Render login template
@@ -643,12 +588,8 @@ app.get("/plusbikes", function (request, response) {
 });
 
 app.get("/adminregister", function (request, response) {
-  if (request.session.loggedin) {
-    // Render login template
-    response.sendFile(path.join(__dirname + "/static/adminregister.html"));
-  } else {
-    response.send("Please login to view this page!");
-  }
+  // Render registration page for admin without requiring login
+  response.sendFile(path.join(__dirname + "/static/adminregister.html"));
 });
 
 app.get("/contact", function (request, response) {
@@ -661,4 +602,4 @@ app.get("/features", function (request, response) {
   response.sendFile(path.join(__dirname + "/static/features.html"));
 });
 
-app.listen(3000);
+module.exports = app;

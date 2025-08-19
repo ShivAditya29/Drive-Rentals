@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Original+Surfer&display=swap");
+/* font-family: 'Original Surfer', cursive; */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.hoja {
+  background-color: #242122;
+  font-family: "Original Surfer", cursive;
+}
+.btn-0 {
+  background-color: #1d9d8f;
+  padding: 0.5rem;
+  border-radius: 3rem;
+}
+.navbar-brand {
+  font-family: "Original Surfer", cursive;
+  font-size: 1.5rem;
+}
+.logo {
+  color: #1d9d8f;
+}
+.img {
+  height: 30rem;
+  width: 40rem;
+}
+.btn-1 {
+  background-color: #1d9d8f;
+  font-weight: bold;
+  padding: 0.8 rem;
+}
+.btn-2 {
+  color: #1d9d8f;
+  padding: 0.7rem;
+}
+.fent {
+  font-family: "Original Surfer", cursive;
+}
+body {
+  background: #1d9d8f;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #1d9d8f;
+}
+
+.profile-button {
+  background: #1d9d8f;
+  box-shadow: none;
+  border: none;
+}
+
+.profile-button:hover {
+  background: #1d9d8f;
+}
+
+.profile-button:focus {
+  background: #1d9d8f;
+  box-shadow: none;
+}
+
+.profile-button:active {
+  background: #1d9d8f;
+  box-shadow: none;
+}
+
+.back:hover {
+  color: #1d9d8f;
+  cursor: pointer;
+}
+
+.labels {
+  font-size: 11px;
+}
+#login img {
+  margin: 10px 0;
+}
+#login .center {
+  text-align: center;
+}
+
+#login .login {
+  max-width: 300px;
+  margin: 35px auto;
+}
+
+#login .login-form {
+  padding: 0px 25px;
+}

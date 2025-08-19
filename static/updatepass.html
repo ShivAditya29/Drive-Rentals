@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <title>Admin Login</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/css/adminlogin.css" />
+  </head>
+  <body class="login-page">
+    <div class="login">
+      <h1>Update Password</h1>
+      <form action="/updation" method="post">
+        <label for="oldpass">
+          <!-- font awesome icon -->
+          <i class="fas fa-user"></i>
+        </label>
+        <input
+          type="password"
+          name="oldpass"
+          placeholder="Old Password"
+          id="old"
+          required
+        />
+        <label for="newpass">
+          <i class="fas fa-lock"></i>
+        </label>
+        <input
+          type="password"
+          name="newpass"
+          placeholder="New Password"
+          id="newpass"
+          required
+        />
+        <input type="submit" value="Update" />
+      </form>
+    </div>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="uslogin.js"></script> -->
+  </body>
+</html>
