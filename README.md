@@ -1,4 +1,4 @@
-# Bike Rental System
+# Drive Rentals
 
 An online bike rental system which provides facility to the people to look for bikes available in the city. Online bike rental system provides an efficient way to rent a bike in contrast to traditional time and energy consuming methods.
 
@@ -23,3 +23,4 @@ HTML, CSS, JavaScript
 - Ease of maintenance and upgradation of the system.
 
 ------------------------------------------------------------------------------------------------
+
